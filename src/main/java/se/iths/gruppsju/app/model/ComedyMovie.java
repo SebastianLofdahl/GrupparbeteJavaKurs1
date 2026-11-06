@@ -9,8 +9,7 @@ public class ComedyMovie extends Movie {
     }
 
     @Override
-    public String category(String movieCategory) {
+    public String category() {
         return "Comedy";
     }
 }
- 

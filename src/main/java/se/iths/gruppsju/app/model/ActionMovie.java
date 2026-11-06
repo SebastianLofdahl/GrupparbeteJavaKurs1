@@ -7,7 +7,7 @@ public class ActionMovie extends Movie {
     }
 
     @Override
-    public String category(String movieCategory) {
+    public String category() {
         return "Action";
     }
 }
