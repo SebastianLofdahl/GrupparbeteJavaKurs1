@@ -29,5 +29,5 @@ public abstract class Movie {
         this.title = title;
     }
 
-    public abstract String category(String movieCategory);
+    public abstract String category();
 }
