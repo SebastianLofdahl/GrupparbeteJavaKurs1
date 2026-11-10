@@ -7,6 +7,7 @@ import se.iths.gruppsju.app.model.Movie;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +37,7 @@ public class ActionMovieStorage implements MovieStorage<ActionMovie> {
     @Override
     public ActionMovie findById(int id) throws IOException {
         List<ActionMovie> movies = findAll();
+
         for (ActionMovie movie : movies) {
             if (movie.getId() == id) {
                 return movie;
@@ -47,14 +49,14 @@ public class ActionMovieStorage implements MovieStorage<ActionMovie> {
 
     @Override
     public List<ActionMovie> findAll() throws IOException {
+        if (Files.notExists(path)) {
+            return new ArrayList<>();
+        }
+
         List<ActionMovie> loadedMovies = mapper.readValue(
                 path.toFile(),
                 new TypeReference<List<ActionMovie>>() {}
         );
-
-        if (loadedMovies == null) {
-            return new ArrayList<>();
-        }
 
         return loadedMovies;
     }
