@@ -9,14 +9,13 @@ import java.nio.file.Path;
 
 public class Main {
     static void main() throws IOException {
-        createComedyMovies();
+        Path comedyMovieStoragePath = Path.of("Data", "comedy-movies.json");
+        MovieStorage<ComedyMovie> comedyMovieStorage = new ComedyMovieStorage(comedyMovieStoragePath);
+
+        createComedyMovies(comedyMovieStorage);
     }
 
-    static void createComedyMovies() {
-        Path path = Path.of("Data", "comedy-movies.json");
-
-        MovieStorage<ComedyMovie> storage = new ComedyMovieStorage(path);
-
+    static void createComedyMovies(MovieStorage<ComedyMovie> storage) {
         for (int i = 0; i < 5; i++) {
             try {
                 storage.save(new ComedyMovie(i + 1, "ComedyMovie " + (i + 1)));
