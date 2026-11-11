@@ -8,6 +8,8 @@ import se.iths.gruppsju.app.storage.ActionMovieStorage;
 import se.iths.gruppsju.app.storage.ComedyMovieStorage;
 import se.iths.gruppsju.app.storage.HorrorMovieStorage;
 import se.iths.gruppsju.app.storage.MovieStorage;
+import se.iths.gruppsju.app.model.DramaMovie;
+import se.iths.gruppsju.app.storage.DramaMovieStorage;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -18,12 +20,15 @@ public class Main {
             new ActionMovieStorage(Path.of("Data", "action-movies.json"));
     static MovieStorage<HorrorMovie> horrorStorage =
             new HorrorMovieStorage(Path.of("data", "horror-movies.json"));
+    static MovieStorage<DramaMovie> dramaStorage =
+            new DramaMovieStorage(Path.of("Data", "drama-movies.json"));
 
     static void main() throws IOException {
         Path comedyMovieStoragePath = Path.of("Data", "comedy-movies.json");
         MovieStorage<ComedyMovie> comedyMovieStorage = new ComedyMovieStorage(comedyMovieStoragePath);
         saveActionMovie();
         saveHorrorMovies();
+        saveDramaMovies();
         createComedyMovies(comedyMovieStorage);
 
         boolean inMenu = true;
@@ -54,7 +59,9 @@ public class Main {
                             }
                         }
                         case "3" -> {
-                            IO.println("Coming soon!");
+                            for (DramaMovie movie : dramaStorage.findAll()) {
+                                IO.println(movie.getTitle());
+                            }
                         }
                         case "4" -> {
                             for (HorrorMovie movie : horrorStorage.findAll()) {
@@ -67,9 +74,13 @@ public class Main {
                 case "2" -> {
                     IO.println("All movies by category");
                     printMoviesByCategory("Action", actionMovieStorage.findAll());
+                    IO.println("\n********");
                     printMoviesByCategory("Comedy", comedyMovieStorage.findAll());
-                    // printMoviesByCategory("Drama", dramaMovieStorage.findAll());
+                    IO.println("\n********");
+                    printMoviesByCategory("Drama", dramaStorage.findAll());
+                    IO.println("\n********");
                     printMoviesByCategory("Horror", horrorStorage.findAll());
+                    IO.println("\n********");
                 }
                 case "0" -> inMenu = false;
 
@@ -109,6 +120,13 @@ public class Main {
         for (ActionMovie movie : actionMovies) {
             actionMovieStorage.save(movie);
         }
+    }
+    static void saveDramaMovies() throws IOException {
+        dramaStorage.save(new DramaMovie(1, "The Godfather"));
+        dramaStorage.save(new DramaMovie(2, "Forrest Gump"));
+        dramaStorage.save(new DramaMovie(3, "Schindler's List"));
+        dramaStorage.save(new DramaMovie(4, "The Shawshank Redemption"));
+        dramaStorage.save(new DramaMovie(5, "Fight Club"));
     }
 
     static void printMoviesByCategory(String category, List<? extends Movie> movies) {
