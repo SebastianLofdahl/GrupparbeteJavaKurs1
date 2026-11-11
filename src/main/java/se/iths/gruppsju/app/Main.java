@@ -2,8 +2,10 @@ package se.iths.gruppsju.app;
 
 import se.iths.gruppsju.app.model.ActionMovie;
 import se.iths.gruppsju.app.model.ComedyMovie;
+import se.iths.gruppsju.app.model.HorrorMovie;
 import se.iths.gruppsju.app.storage.ActionMovieStorage;
 import se.iths.gruppsju.app.storage.ComedyMovieStorage;
+import se.iths.gruppsju.app.storage.HorrorMovieStorage;
 import se.iths.gruppsju.app.storage.MovieStorage;
 
 import java.io.IOException;
@@ -29,6 +31,7 @@ public class Main {
         MovieStorage<ComedyMovie> comedyMovieStorage = new ComedyMovieStorage(comedyMovieStoragePath);
 
         createComedyMovies(comedyMovieStorage);
+        saveHorrorMovies();
     }
 
     static void createComedyMovies(MovieStorage<ComedyMovie> storage) {
@@ -39,7 +42,16 @@ public class Main {
                 System.err.println(e.getMessage());
             }
         }
+    }
 
+    static void saveHorrorMovies() throws IOException {
+        MovieStorage<HorrorMovie> horrorStorage =
+                new HorrorMovieStorage(Path.of("data", "horror-movies.json"));
 
+        horrorStorage.save(new HorrorMovie(1, "Alien"));
+        horrorStorage.save(new HorrorMovie(2, "The Shining"));
+        horrorStorage.save(new HorrorMovie(3, "Scream"));
+        horrorStorage.save(new HorrorMovie(4, "Halloween"));
+        horrorStorage.save(new HorrorMovie(5, "The Exorcist"));
     }
 }
